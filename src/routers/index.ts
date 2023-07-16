@@ -6,12 +6,6 @@ import { verifyToken, cacheControlMiddleware } from "../middleware";
 
 import cors from "cors";
 
-const corsOptions = {
-  origin: "https://financas-front-end-git-dev-kallif003.vercel.app",
-  methods: ["GET", "POST", "DELETE", "PUT"],
-  allowedHeaders: ["Content-Type", "Authorization"],
-};
-
 const router = (app: Express) => {
   app.route("/").get((req: Request, res: Response) => {
     res.status(200).send("SaveMoney Backend Ativo");
@@ -19,7 +13,7 @@ const router = (app: Express) => {
 
   app.use(
     express.json(),
-    cors(corsOptions),
+    cors(),
     cacheControlMiddleware,
     login_route,
     user_route,
