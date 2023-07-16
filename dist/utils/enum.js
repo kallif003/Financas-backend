@@ -4,7 +4,7 @@ exports.Permissions = exports.Routes = void 0;
 var Routes;
 (function (Routes) {
     Routes["GET_USERS"] = "/users";
-    Routes["GET_USER_BY_USERNAME"] = "/user/by-username";
+    Routes["GET_USER_BY_USERNAME"] = "/api/user/by-username";
     Routes["GET_ALL_USERNAMES"] = "/user/all";
     Routes["SAVE_USER"] = "/api/user/save";
     Routes["UPDATE_USER"] = "/user/update/:id";
