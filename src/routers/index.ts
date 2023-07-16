@@ -8,7 +8,7 @@ import cors from "cors";
 
 const router = (app: Express) => {
   app.route("/").get((req: Request, res: Response) => {
-    res.status(200).send("Pro Resíduos Ativo");
+    res.status(200).send("SaveMoney Backend Ativo");
   });
 
   app.use(

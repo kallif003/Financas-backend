@@ -11,7 +11,7 @@ const middleware_1 = require("../middleware");
 const cors_1 = __importDefault(require("cors"));
 const router = (app) => {
     app.route("/").get((req, res) => {
-        res.status(200).send("Pro Resíduos Ativo");
+        res.status(200).send("SaveMoney Backend Ativo");
     });
     app.use(express_1.default.json(), (0, cors_1.default)(), middleware_1.cacheControlMiddleware, login_route_1.default, users_route_1.default, middleware_1.verifyToken, payload_route_1.default);
 };
