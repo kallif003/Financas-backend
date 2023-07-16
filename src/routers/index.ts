@@ -7,6 +7,8 @@ import cors from "cors";
 
 const corsOptions = {
   origin: "https://financas-front-end-git-dev-kallif003.vercel.app",
+  methods: ["GET", "POST", "DELETE", "PUT"],
+  allowedHeaders: ["Content-Type", "Authorization"],
 };
 
 const router = (app: Express) => {
@@ -15,8 +17,8 @@ const router = (app: Express) => {
   });
 
   app.use(
-    cors(corsOptions),
     express.json(),
+    cors(corsOptions),
     cacheControlMiddleware,
     login_route,
     user_route,
