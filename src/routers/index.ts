@@ -12,8 +12,8 @@ const router = (app: Express) => {
   });
 
   app.use(
-    express.json(),
     cors(),
+    express.json(),
     cacheControlMiddleware,
     login_route,
     user_route,
