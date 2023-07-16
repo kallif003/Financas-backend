@@ -3,6 +3,7 @@ import user_route from "./users_route";
 import login_route from "./login_route";
 import payload_route from "./payload_route";
 import { verifyToken, cacheControlMiddleware } from "../middleware";
+
 import cors from "cors";
 
 const corsOptions = {
