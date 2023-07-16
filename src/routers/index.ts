@@ -3,8 +3,11 @@ import user_route from "./users_route";
 import login_route from "./login_route";
 import payload_route from "./payload_route";
 import { verifyToken, cacheControlMiddleware } from "../middleware";
-
 import cors from "cors";
+
+const corsOptions = {
+  origin: "https://financas-front-end-git-dev-kallif003.vercel.app",
+};
 
 const router = (app: Express) => {
   app.route("/").get((req: Request, res: Response) => {
@@ -12,7 +15,7 @@ const router = (app: Express) => {
   });
 
   app.use(
-    cors(),
+    cors(corsOptions),
     express.json(),
     cacheControlMiddleware,
     login_route,

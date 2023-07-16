@@ -9,11 +9,14 @@ const login_route_1 = __importDefault(require("./login_route"));
 const payload_route_1 = __importDefault(require("./payload_route"));
 const middleware_1 = require("../middleware");
 const cors_1 = __importDefault(require("cors"));
+const corsOptions = {
+    origin: "https://financas-front-end-git-dev-kallif003.vercel.app",
+};
 const router = (app) => {
     app.route("/").get((req, res) => {
         res.status(200).send("SaveMoney Backend Ativo");
     });
-    app.use((0, cors_1.default)(), express_1.default.json(), middleware_1.cacheControlMiddleware, login_route_1.default, users_route_1.default, middleware_1.verifyToken, payload_route_1.default);
+    app.use((0, cors_1.default)(corsOptions), express_1.default.json(), middleware_1.cacheControlMiddleware, login_route_1.default, users_route_1.default, middleware_1.verifyToken, payload_route_1.default);
 };
 exports.default = router;
 //# sourceMappingURL=index.js.map
