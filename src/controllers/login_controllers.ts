@@ -45,7 +45,7 @@ class LoginController {
 
       const refreshToken = await TokenService.generateRefreshToken(user.id);
 
-      res.json({ token, refreshToken });
+      res.status(200).json({ token, refreshToken });
     } catch (error) {
       res.status(500).json({ error: "Erro ao fazer login" });
     }

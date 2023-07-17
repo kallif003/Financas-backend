@@ -39,7 +39,7 @@ class LoginController {
                 }
                 const token = token_service_1.default.generateAcessToken(user.role, user.name, user._id);
                 const refreshToken = yield token_service_1.default.generateRefreshToken(user.id);
-                res.json({ token, refreshToken });
+                res.status(200).json({ token, refreshToken });
             }
             catch (error) {
                 res.status(500).json({ error: "Erro ao fazer login" });
