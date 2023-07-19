@@ -1,16 +1,17 @@
 export enum Routes {
-  GET_USERS = "/users",
-  GET_USER_BY_USERNAME = "/api/user/by-username",
-  GET_ALL_USERNAMES = "/user/all",
   SAVE_USER = "/api/user/save",
   UPDATE_USER = "/user/update/:id",
+  REDEFINE_PASSWORD = "/api/redefine_password",
+  NEW_PASSWORD = "/api/new_password/:id",
   DELETE_USER = "/user/:id",
 
   LOGIN = "/api/login",
   PAYLOAD = "/api/payload",
-  REFRESH_TOKEN = "/refresh_token",
+  REFRESH_TOKEN = "/api/refresh_token",
+  SAVE_SALARY = "/api/salary/save/:id",
+  GET_SALARY = "/api/salary/:id",
 }
 
 export enum Permissions {
-  USER = "USER",
+  USER = "SAVEMONEY_USER",
 }

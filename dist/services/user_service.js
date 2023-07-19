@@ -74,6 +74,36 @@ class UserService {
             }
         });
     }
+    static passwordResetService(updatedData, id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                let user;
+                if (id) {
+                    user = yield users_1.default.findById(id, { deleted: false });
+                }
+                else {
+                    user = yield users_1.default.findOne({
+                        email: updatedData[0].email,
+                        deleted: false,
+                    });
+                }
+                if (user == null) {
+                    throw new handleError_1.default("Email não encontrado", 404);
+                }
+                const saltRounds = 8;
+                const hashedPassword = yield bcrypt_1.default.hash(updatedData[0].password, saltRounds);
+                user.password = hashedPassword;
+                yield user.save();
+                return true;
+            }
+            catch (error) {
+                if (error instanceof handleError_1.default) {
+                    throw error;
+                }
+                throw new Error("Usuário não encontrado");
+            }
+        });
+    }
     static deleteUser(userId) {
         return __awaiter(this, void 0, void 0, function* () {
             try {

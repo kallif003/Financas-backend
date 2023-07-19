@@ -12,7 +12,9 @@ const user_route = express_1.default.Router();
 const user_controller = new user_controllers_1.default();
 user_route
     .post(enum_1.Routes.SAVE_USER, userSchema_1.userCreateSchema, user_controller.createUser)
-    .put(enum_1.Routes.UPDATE_USER, (0, middleware_1.verifyPermission)([enum_1.Permissions.USER]), user_controller.updateUsers)
-    .delete(enum_1.Routes.DELETE_USER, (0, middleware_1.verifyPermission)([enum_1.Permissions.USER]), user_controller.deleteUsers);
+    .put(enum_1.Routes.REDEFINE_PASSWORD, user_controller.redefinePassword)
+    .put(enum_1.Routes.UPDATE_USER, middleware_1.verifyToken, (0, middleware_1.verifyPermission)([enum_1.Permissions.USER]), user_controller.updateUsers)
+    .put(enum_1.Routes.NEW_PASSWORD, middleware_1.verifyToken, (0, middleware_1.verifyPermission)([enum_1.Permissions.USER]), user_controller.redefinePassword)
+    .delete(enum_1.Routes.DELETE_USER, middleware_1.verifyToken, (0, middleware_1.verifyPermission)([enum_1.Permissions.USER]), user_controller.deleteUsers);
 exports.default = user_route;
 //# sourceMappingURL=users_route.js.map

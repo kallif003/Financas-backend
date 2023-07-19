@@ -30,11 +30,7 @@ class UserController {
 
   async updateUsers(req: Request, res: Response) {
     try {
-      const {
-        name,
-        password,
-        email,
-      }: IUser = req.body;
+      const { name, password, email }: IUser = req.body;
 
       const { id } = req.params;
 
@@ -49,7 +45,25 @@ class UserController {
         return res.status(error.statusCode).send({ message: error.message });
       }
 
-      return res.status(404).send({ message: error.message });
+      return res.status(500).send({ message: error.message });
+    }
+  }
+
+  async redefinePassword(req: Request, res: Response) {
+    try {
+      const { password, email }: IUser = req.body;
+
+      const { id } = req.params;
+
+      await UserService.passwordResetService([{ password, email }], id);
+
+      return res.status(200).send("Senha redefinida com sucesso");
+    } catch (error: any) {
+      if (error instanceof HandleError) {
+        return res.status(error.statusCode).send({ message: error.message });
+      }
+
+      return res.status(500).send({ message: error.message });
     }
   }
 

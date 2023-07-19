@@ -76,6 +76,44 @@ class UserService {
     }
   }
 
+  static async passwordResetService(updatedData: IUser[], id: string) {
+    try {
+      let user: any;
+
+      if (id) {
+        user = await User.findById(id, { deleted: false });
+      } else {
+        user = await User.findOne({
+          email: updatedData[0].email,
+          deleted: false,
+        });
+      }
+
+      if (user == null) {
+        throw new HandleError("Email não encontrado", 404);
+      }
+
+      const saltRounds = 8;
+      
+      const hashedPassword = await bcrypt.hash(
+        updatedData[0].password,
+        saltRounds
+      );
+
+      user.password = hashedPassword;
+
+      await user!.save();
+
+      return true;
+    } catch (error: any) {
+      if (error instanceof HandleError) {
+        throw error;
+      }
+
+      throw new Error("Usuário não encontrado");
+    }
+  }
+
   static async deleteUser(userId: string) {
     try {
       const currentDate = new Date();
