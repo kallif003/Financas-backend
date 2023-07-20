@@ -18,6 +18,16 @@ export interface IUserSchema extends Document {
   deleted: boolean;
 }
 
+export interface ICategorySchema extends Document {
+  name: string;
+  value: number;
+  userId: string;
+  createdAt: Date;
+  deletedAt?: Date;
+  updatedAt?: Date;
+  deleted: boolean;
+}
+
 export interface ISalarySchema extends Document {
   value: number;
   userId: string;
