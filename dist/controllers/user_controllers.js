@@ -37,28 +37,12 @@ class UserController {
             }
         });
     }
-    updateUsers(req, res) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const { name, password, email } = req.body;
-                const { id } = req.params;
-                const user = yield user_service_1.default.updateUser([{ name, password, email }], id);
-                return res.status(200).json(user);
-            }
-            catch (error) {
-                if (error instanceof handleError_1.default) {
-                    return res.status(error.statusCode).send({ message: error.message });
-                }
-                return res.status(500).send({ message: error.message });
-            }
-        });
-    }
     redefinePassword(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const { password, email } = req.body;
+                const { email, password } = req.body;
                 const { id } = req.params;
-                yield user_service_1.default.passwordResetService([{ password, email }], id);
+                yield user_service_1.default.passwordResetService([{ email, password }], id);
                 return res.status(200).send("Senha redefinida com sucesso");
             }
             catch (error) {

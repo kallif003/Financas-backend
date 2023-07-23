@@ -28,34 +28,13 @@ class UserController {
     }
   }
 
-  async updateUsers(req: Request, res: Response) {
-    try {
-      const { name, password, email }: IUser = req.body;
-
-      const { id } = req.params;
-
-      const user = await UserService.updateUser(
-        [{ name, password, email }],
-        id
-      );
-
-      return res.status(200).json(user);
-    } catch (error: any) {
-      if (error instanceof HandleError) {
-        return res.status(error.statusCode).send({ message: error.message });
-      }
-
-      return res.status(500).send({ message: error.message });
-    }
-  }
-
   async redefinePassword(req: Request, res: Response) {
     try {
-      const { password, email }: IUser = req.body;
+      const { email, password }: IUser = req.body;
 
       const { id } = req.params;
 
-      await UserService.passwordResetService([{ password, email }], id);
+      await UserService.passwordResetService([{ email, password }], id);
 
       return res.status(200).send("Senha redefinida com sucesso");
     } catch (error: any) {

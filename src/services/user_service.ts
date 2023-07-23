@@ -39,43 +39,6 @@ class UserService {
     }
   }
 
-  static async updateUser(updatedData: IUser[], id: string) {
-    try {
-      let existingUser: any;
-
-      if (updatedData[0].email) {
-        existingUser = await User.findOne({
-          username: updatedData[0].email,
-          deleted: false,
-        });
-      }
-
-      if (existingUser != null) {
-        throw new HandleError("Email já existente", 409);
-      }
-
-      let user = (await User.findById(id)) as any;
-
-      for (const key in updatedData[0]) {
-        const value = updatedData[0][key as keyof IUser];
-
-        if (value) {
-          user[key] = value;
-        }
-      }
-
-      const updatedUser = await user!.save();
-
-      return updatedUser;
-    } catch (error: any) {
-      if (error instanceof HandleError) {
-        throw error;
-      }
-
-      throw new Error("Usuário não encontrado");
-    }
-  }
-
   static async passwordResetService(updatedData: IUser[], id: string) {
     try {
       let user: any;
@@ -94,7 +57,7 @@ class UserService {
       }
 
       const saltRounds = 8;
-      
+
       const hashedPassword = await bcrypt.hash(
         updatedData[0].password,
         saltRounds

@@ -11,12 +11,6 @@ user_route
   .post(Routes.SAVE_USER, userCreateSchema, user_controller.createUser)
   .put(Routes.REDEFINE_PASSWORD, user_controller.redefinePassword)
   .put(
-    Routes.UPDATE_USER,
-    verifyToken,
-    verifyPermission([Permissions.USER]),
-    user_controller.updateUsers
-  )
-  .put(
     Routes.NEW_PASSWORD,
     verifyToken,
     verifyPermission([Permissions.USER]),

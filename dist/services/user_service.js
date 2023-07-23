@@ -43,37 +43,6 @@ class UserService {
             }
         });
     }
-    static updateUser(updatedData, id) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                let existingUser;
-                if (updatedData[0].email) {
-                    existingUser = yield users_1.default.findOne({
-                        username: updatedData[0].email,
-                        deleted: false,
-                    });
-                }
-                if (existingUser != null) {
-                    throw new handleError_1.default("Email já existente", 409);
-                }
-                let user = (yield users_1.default.findById(id));
-                for (const key in updatedData[0]) {
-                    const value = updatedData[0][key];
-                    if (value) {
-                        user[key] = value;
-                    }
-                }
-                const updatedUser = yield user.save();
-                return updatedUser;
-            }
-            catch (error) {
-                if (error instanceof handleError_1.default) {
-                    throw error;
-                }
-                throw new Error("Usuário não encontrado");
-            }
-        });
-    }
     static passwordResetService(updatedData, id) {
         return __awaiter(this, void 0, void 0, function* () {
             try {

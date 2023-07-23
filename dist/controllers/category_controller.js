@@ -8,14 +8,64 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
+const category_service_1 = __importDefault(require("../services/category_service"));
+const handleError_1 = __importDefault(require("../utils/errors/handleError"));
 class CategoryController {
     createCategory(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const { name, value } = req.body;
                 const { id } = req.params;
-                return res.status(201).json();
+                const category = yield category_service_1.default.createCategoryService(name, value, id);
+                return res.status(201).json(category);
+            }
+            catch (error) {
+                if (error instanceof handleError_1.default) {
+                    return res.status(error.statusCode).send({ message: error.message });
+                }
+                return res.status(500).send({ message: error.message });
+            }
+        });
+    }
+    getCategories(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const { page, itemsPerPage } = req.body;
+                const { id } = req.params;
+                const skip = (parseInt(page) - 1) * parseInt(itemsPerPage);
+                const categories = yield category_service_1.default.getCategoriesService(id, skip, itemsPerPage);
+                return res.status(200).json(categories);
+            }
+            catch (error) {
+                if (error instanceof handleError_1.default) {
+                    return res.status(error.statusCode).send({ message: error.message });
+                }
+                return res.status(500).send({ message: error.message });
+            }
+        });
+    }
+    getNameOfAllCategories(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const { id } = req.params;
+                const categories = yield category_service_1.default.getNameOfAllCategoriesService(id);
+                return res.status(200).json(categories);
+            }
+            catch (error) {
+                return res.status(500).send({ message: error.message });
+            }
+        });
+    }
+    getCategoryById(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const { id } = req.params;
+                const category = yield category_service_1.default.getCategoryByIdService(id);
+                return res.status(200).json(category);
             }
             catch (error) {
                 return res.status(500).send({ message: error.message });
