@@ -26,6 +26,16 @@ category_route
     Routes.SAVE_CATEGORY,
     verifyPermission([Permissions.USER]),
     category_controller.createCategory
+  )
+  .put(
+    Routes.UPDATE_CATEGORY,
+    verifyPermission([Permissions.USER]),
+    category_controller.updateCategory
+  )
+  .delete(
+    Routes.DELETE_CATEGORY,
+    verifyPermission([Permissions.USER]),
+    category_controller.deleteCategory
   );
 
 export default category_route;

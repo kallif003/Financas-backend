@@ -14,7 +14,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const handleError_1 = __importDefault(require("../utils/errors/handleError"));
 const category_1 = __importDefault(require("../models/category"));
-class CategoryService {
+const pagination_service_1 = __importDefault(require("./pagination_service"));
+class CategoryService extends pagination_service_1.default {
     static createCategoryService(name, value, userId) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
@@ -42,15 +43,7 @@ class CategoryService {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const query = { userId, deleted: false };
-                const categories = yield category_1.default.find(query)
-                    .skip(skip)
-                    .limit(itemsPerPage);
-                if (categories.length == 0) {
-                    throw new handleError_1.default("Não há registros para essa busca", 404);
-                }
-                const totalCategories = yield category_1.default.find(query).count();
-                const totalPages = Math.ceil(totalCategories / itemsPerPage);
-                return { categories, totalPages };
+                return yield this.getPaginatedItems(query, skip, itemsPerPage, category_1.default);
             }
             catch (error) {
                 if (error instanceof handleError_1.default) {
@@ -63,10 +56,11 @@ class CategoryService {
     static getNameOfAllCategoriesService(userId) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const categories = yield category_1.default.find({ userId, deleted: false }, "_id name").exec();
+                const categories = yield category_1.default.find({ userId, deleted: false }, "_id name value").exec();
                 const formattedCategories = categories.map((category) => ({
                     id: category._id.toString(),
                     name: category.name,
+                    destinedValue: category.value,
                 }));
                 return formattedCategories;
             }
@@ -79,6 +73,49 @@ class CategoryService {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const category = yield category_1.default.findById(id);
+                return category;
+            }
+            catch (error) {
+                throw new Error(error.message);
+            }
+        });
+    }
+    static updateCattegoryService(updateData, id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const existingCategory = yield category_1.default.find({
+                    userId: updateData[0].userId,
+                    name: updateData[0].name,
+                    deleted: false,
+                });
+                if (existingCategory.length > 0) {
+                    throw new handleError_1.default("Essa categoria já existe", 409);
+                }
+                let category = (yield category_1.default.findById(id));
+                for (const key in updateData[0]) {
+                    const value = updateData[0][key];
+                    if (value)
+                        category[key] = value;
+                }
+                const updateCategory = yield category.save();
+                return updateCategory;
+            }
+            catch (error) {
+                if (error instanceof handleError_1.default) {
+                    throw error;
+                }
+                throw new Error(error.message);
+            }
+        });
+    }
+    static deleteCategoryService(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const currentDate = new Date();
+                const category = yield category_1.default.findByIdAndUpdate(id, {
+                    deleted: true,
+                    deletedAt: currentDate,
+                }, { new: true });
                 return category;
             }
             catch (error) {

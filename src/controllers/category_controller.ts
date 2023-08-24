@@ -70,6 +70,43 @@ class CategoryController {
       return res.status(500).send({ message: error.message });
     }
   }
+
+  async updateCategory(req: Request, res: Response) {
+    try {
+      let { userId, name, value } = req.body;
+
+      const { id } = req.params;
+
+      if (name) {
+        name = name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
+      }
+
+      const category = await CategoryService.updateCattegoryService(
+        [{ userId, name, value }],
+        id
+      );
+
+      return res.status(201).json(category);
+    } catch (error) {
+      if (error instanceof HandleError) {
+        return res.status(error.statusCode).send({ message: error.message });
+      }
+
+      return res.status(500).send({ message: error.message });
+    }
+  }
+
+  async deleteCategory(req: Request, res: Response) {
+    try {
+      const { id } = req.params;
+
+      const category = await CategoryService.deleteCategoryService(id);
+
+      return res.status(200).json(category);
+    } catch (error: any) {
+      return res.status(500).send({ message: error.message });
+    }
+  }
 }
 
 export default CategoryController;

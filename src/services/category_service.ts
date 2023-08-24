@@ -1,7 +1,9 @@
 import HandleError from "../utils/errors/handleError";
 import Category from "../models/category";
+import { IUpdateCategory } from "../utils/interfaces";
+import PaginationService from "./pagination_service";
 
-class CategoryService {
+class CategoryService extends PaginationService {
   static async createCategoryService(
     name: string,
     value: number,
@@ -41,19 +43,7 @@ class CategoryService {
     try {
       const query = { userId, deleted: false };
 
-      const categories = await Category.find(query)
-        .skip(skip)
-        .limit(itemsPerPage);
-
-      if (categories.length == 0) {
-        throw new HandleError("Não há registros para essa busca", 404);
-      }
-
-      const totalCategories = await Category.find(query).count();
-
-      const totalPages = Math.ceil(totalCategories / itemsPerPage);
-
-      return { categories, totalPages };
+      return await this.getPaginatedItems(query, skip, itemsPerPage, Category);
     } catch (error) {
       if (error instanceof HandleError) {
         throw error;
@@ -67,12 +57,13 @@ class CategoryService {
     try {
       const categories = await Category.find(
         { userId, deleted: false },
-        "_id name"
+        "_id name value"
       ).exec();
 
       const formattedCategories = categories.map((category) => ({
         id: category._id.toString(),
         name: category.name,
+        destinedValue: category.value,
       }));
 
       return formattedCategories;
@@ -80,12 +71,67 @@ class CategoryService {
       throw new Error(error.message);
     }
   }
+
   static async getCategoryByIdService(id: string) {
     try {
       const category = await Category.findById(id);
 
       return category;
     } catch (error) {
+      throw new Error(error.message);
+    }
+  }
+
+  static async updateCattegoryService(
+    updateData: IUpdateCategory[],
+    id: string
+  ) {
+    try {
+      const existingCategory = await Category.find({
+        userId: updateData[0].userId,
+        name: updateData[0].name,
+        deleted: false,
+      });
+
+      if (existingCategory.length > 0) {
+        throw new HandleError("Essa categoria já existe", 409);
+      }
+
+      let category = (await Category.findById(id)) as any;
+
+      for (const key in updateData[0]) {
+        const value = updateData[0][key as keyof IUpdateCategory];
+
+        if (value) category[key] = value;
+      }
+
+      const updateCategory = await category!.save();
+
+      return updateCategory;
+    } catch (error) {
+      if (error instanceof HandleError) {
+        throw error;
+      }
+
+      throw new Error(error.message);
+    }
+  }
+
+  static async deleteCategoryService(id: string) {
+    try {
+      const currentDate = new Date();
+
+      const category = await Category.findByIdAndUpdate(
+        id,
+        {
+          deleted: true,
+          deletedAt: currentDate,
+        },
+        { new: true }
+      );
+
+      return category;
+    } catch (error: any) {
       throw new Error(error.message);
     }
   }

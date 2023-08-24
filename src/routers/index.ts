@@ -5,6 +5,7 @@ import payload_route from "./payload_route";
 import salary_route from "./salary_route";
 import category_route from "./category_route";
 import refresh_token_route from "./refreshToken_route";
+import release_route from "./release_route";
 import { verifyToken, cacheControlMiddleware } from "../middleware";
 
 import cors from "cors";
@@ -24,7 +25,8 @@ const router = (app: Express) => {
     salary_route,
     payload_route,
     category_route,
-    refresh_token_route
+    refresh_token_route,
+    release_route
   );
 };
 

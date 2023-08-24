@@ -72,6 +72,37 @@ class CategoryController {
             }
         });
     }
+    updateCategory(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                let { userId, name, value } = req.body;
+                const { id } = req.params;
+                if (name) {
+                    name = name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
+                }
+                const category = yield category_service_1.default.updateCattegoryService([{ userId, name, value }], id);
+                return res.status(201).json(category);
+            }
+            catch (error) {
+                if (error instanceof handleError_1.default) {
+                    return res.status(error.statusCode).send({ message: error.message });
+                }
+                return res.status(500).send({ message: error.message });
+            }
+        });
+    }
+    deleteCategory(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const { id } = req.params;
+                const category = yield category_service_1.default.deleteCategoryService(id);
+                return res.status(200).json(category);
+            }
+            catch (error) {
+                return res.status(500).send({ message: error.message });
+            }
+        });
+    }
 }
 exports.default = CategoryController;
 //# sourceMappingURL=category_controller.js.map
