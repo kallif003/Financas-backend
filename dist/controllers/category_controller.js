@@ -81,7 +81,7 @@ class CategoryController {
                     name = name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
                 }
                 const category = yield category_service_1.default.updateCattegoryService([{ userId, name, value }], id);
-                return res.status(201).json(category);
+                return res.status(204).json("updated category");
             }
             catch (error) {
                 if (error instanceof handleError_1.default) {
@@ -96,7 +96,7 @@ class CategoryController {
             try {
                 const { id } = req.params;
                 const category = yield category_service_1.default.deleteCategoryService(id);
-                return res.status(200).json(category);
+                return res.status(204).json("deleted category");
             }
             catch (error) {
                 return res.status(500).send({ message: error.message });

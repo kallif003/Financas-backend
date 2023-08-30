@@ -86,7 +86,7 @@ class CategoryController {
         id
       );
 
-      return res.status(201).json(category);
+      return res.status(204).json("updated category");
     } catch (error) {
       if (error instanceof HandleError) {
         return res.status(error.statusCode).send({ message: error.message });
@@ -102,7 +102,7 @@ class CategoryController {
 
       const category = await CategoryService.deleteCategoryService(id);
 
-      return res.status(200).json(category);
+      return res.status(204).json("deleted category");
     } catch (error: any) {
       return res.status(500).send({ message: error.message });
     }

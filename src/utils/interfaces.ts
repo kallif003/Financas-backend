@@ -62,10 +62,7 @@ export interface IRelease {
   name: string;
   value: number;
   locale: string;
-  createdAt: Date;
-  updatedAt: Date;
-  deleted: boolean;
-  deletedAt: Date;
+  date: Date;
 }
 
 export interface IReleasesData {

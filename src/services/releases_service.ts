@@ -30,13 +30,10 @@ class ReleasesService extends PaginationService {
         name,
         value,
         locale,
-        createdAt: date,
-        updatedAt: date,
-        deleted: false,
-        deletedAt: null,
+        date: date,
       };
 
-      let existingRelease = await ReleaseModel.findOne({ category });
+      let existingRelease = await ReleaseModel.findOne({ category, createdAt });
 
       if (!existingRelease) {
         existingRelease = new ReleaseModel({

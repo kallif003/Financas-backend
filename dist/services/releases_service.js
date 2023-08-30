@@ -25,12 +25,9 @@ class ReleasesService extends pagination_service_1.default {
                     name,
                     value,
                     locale,
-                    createdAt: date,
-                    updatedAt: date,
-                    deleted: false,
-                    deletedAt: null,
+                    date: date,
                 };
-                let existingRelease = yield release_1.default.findOne({ category });
+                let existingRelease = yield release_1.default.findOne({ category, createdAt });
                 if (!existingRelease) {
                     existingRelease = new release_1.default({
                         category,

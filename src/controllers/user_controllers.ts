@@ -36,7 +36,7 @@ class UserController {
 
       await UserService.passwordResetService([{ email, password }], id);
 
-      return res.status(200).send("Senha redefinida com sucesso");
+      return res.status(204).send("Senha redefinida com sucesso");
     } catch (error: any) {
       if (error instanceof HandleError) {
         return res.status(error.statusCode).send({ message: error.message });

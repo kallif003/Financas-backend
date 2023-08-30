@@ -43,7 +43,7 @@ class UserController {
                 const { email, password } = req.body;
                 const { id } = req.params;
                 yield user_service_1.default.passwordResetService([{ email, password }], id);
-                return res.status(200).send("Senha redefinida com sucesso");
+                return res.status(204).send("Senha redefinida com sucesso");
             }
             catch (error) {
                 if (error instanceof handleError_1.default) {
