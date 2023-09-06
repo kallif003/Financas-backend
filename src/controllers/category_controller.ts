@@ -37,7 +37,7 @@ class CategoryController {
         itemsPerPage
       );
 
-      return res.status(200).json(categories);
+      return res.status(201).json(categories);
     } catch (error) {
       if (error instanceof HandleError) {
         return res.status(error.statusCode).send({ message: error.message });
