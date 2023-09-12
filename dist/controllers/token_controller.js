@@ -19,8 +19,7 @@ class TokenController {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const token = (_a = req.headers.authorization) === null || _a === void 0 ? void 0 : _a.replace("Bearer ", "");
-                const { userId } = req.body;
-                const refresh_token = yield token_service_1.default.updateRefreshToken(token, userId);
+                const refresh_token = yield token_service_1.default.updateRefreshToken(token);
                 return res.status(200).json(refresh_token);
             }
             catch (error) {

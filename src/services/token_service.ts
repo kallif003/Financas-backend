@@ -35,7 +35,7 @@ class TokenService {
       userId,
     };
 
-    const token = jwt.sign(config, JWT_SECRET, { expiresIn: "5h" });
+    const token = jwt.sign(config, JWT_SECRET, { expiresIn: "10s" });
     return token;
   }
 
@@ -45,15 +45,21 @@ class TokenService {
     return decodedToken;
   }
 
-  static async updateRefreshToken(oldRefreshToken: string, userId: string) {
+  static async updateRefreshToken(oldRefreshToken: string) {
+    const userInfo = this.verifyToken(oldRefreshToken) as any;
+
     const refresh_token = await TokenModel.findOne({
       refreshToken: oldRefreshToken,
     });
 
-    const user = await User.findById(userId);
+    const user = await User.findById(userInfo.userId);
 
     if (refresh_token) {
-      const token = this.generateAcessToken(user.role, user.name, userId);
+      const token = this.generateAcessToken(
+        user.role,
+        user.name,
+        userInfo.userId
+      );
 
       const refreshToken = await this.generateRefreshToken(user.id);
 

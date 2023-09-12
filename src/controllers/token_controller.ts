@@ -6,12 +6,7 @@ class TokenController {
     try {
       const token = req.headers.authorization?.replace("Bearer ", "");
 
-      const { userId } = req.body;
-
-      const refresh_token = await TokenService.updateRefreshToken(
-        token,
-        userId
-      );
+      const refresh_token = await TokenService.updateRefreshToken(token);
 
       return res.status(200).json(refresh_token);
     } catch (error) {

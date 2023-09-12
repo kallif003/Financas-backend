@@ -42,21 +42,22 @@ class TokenService {
             name,
             userId,
         };
-        const token = jsonwebtoken_1.default.sign(config, JWT_SECRET, { expiresIn: "5h" });
+        const token = jsonwebtoken_1.default.sign(config, JWT_SECRET, { expiresIn: "10s" });
         return token;
     }
     static verifyToken(token) {
         const decodedToken = jsonwebtoken_1.default.verify(token, JWT_SECRET);
         return decodedToken;
     }
-    static updateRefreshToken(oldRefreshToken, userId) {
+    static updateRefreshToken(oldRefreshToken) {
         return __awaiter(this, void 0, void 0, function* () {
+            const userInfo = this.verifyToken(oldRefreshToken);
             const refresh_token = yield refreshToken_1.default.findOne({
                 refreshToken: oldRefreshToken,
             });
-            const user = yield users_1.default.findById(userId);
+            const user = yield users_1.default.findById(userInfo.userId);
             if (refresh_token) {
-                const token = this.generateAcessToken(user.role, user.name, userId);
+                const token = this.generateAcessToken(user.role, user.name, userInfo.userId);
                 const refreshToken = yield this.generateRefreshToken(user.id);
                 return { token, refreshToken };
             }
