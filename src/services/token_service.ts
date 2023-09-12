@@ -35,7 +35,7 @@ class TokenService {
       userId,
     };
 
-    const token = jwt.sign(config, JWT_SECRET, { expiresIn: "10s" });
+    const token = jwt.sign(config, JWT_SECRET, { expiresIn: "5h" });
     return token;
   }
 

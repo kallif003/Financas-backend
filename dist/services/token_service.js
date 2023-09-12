@@ -42,7 +42,7 @@ class TokenService {
             name,
             userId,
         };
-        const token = jsonwebtoken_1.default.sign(config, JWT_SECRET, { expiresIn: "10s" });
+        const token = jsonwebtoken_1.default.sign(config, JWT_SECRET, { expiresIn: "5h" });
         return token;
     }
     static verifyToken(token) {
