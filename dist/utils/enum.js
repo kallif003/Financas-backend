@@ -21,6 +21,7 @@ var Routes;
     Routes["LOGIN"] = "/api/login";
     Routes["PAYLOAD"] = "/api/payload";
     Routes["REFRESH_TOKEN"] = "/api/refresh_token";
+    Routes["VERIFYTOKEN"] = "/api/verifyToken";
     Routes["SAVE_SALARY"] = "/api/salary/save/:id";
     Routes["GET_SALARY"] = "/api/salary/:id";
 })(Routes = exports.Routes || (exports.Routes = {}));

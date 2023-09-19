@@ -1,12 +1,13 @@
+import { ISalarySchema } from "../utils/interfaces";
 import Salary from "../models/salary";
 
 class SalaryService {
   static async registerSalaryService(value: number, userId: string) {
     try {
-      const salary = await Salary.findOne({ userId });
+      const salary: ISalarySchema = await Salary.findOne({ userId });
 
-      salary.value = value
-      
+      salary.value = value;
+
       await salary.save();
 
       return "Salário registrado com sucesso";

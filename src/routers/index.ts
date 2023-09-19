@@ -1,10 +1,6 @@
 import express, { Request, Response, Express } from "express";
-import user_route from "./users_route";
-import login_route from "./login_route";
-import payload_route from "./payload_route";
 import salary_route from "./salary_route";
 import category_route from "./category_route";
-import refresh_token_route from "./refreshToken_route";
 import release_route from "./release_route";
 import { verifyToken, cacheControlMiddleware } from "../middleware";
 
@@ -19,13 +15,9 @@ const router = (app: Express) => {
     express.json(),
     cors(),
     cacheControlMiddleware,
-    login_route,
-    user_route,
     verifyToken,
     salary_route,
-    payload_route,
     category_route,
-    refresh_token_route,
     release_route
   );
 };
