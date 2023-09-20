@@ -20,10 +20,11 @@ export enum Routes {
   LOGIN = "/api/login",
   PAYLOAD = "/api/payload",
   REFRESH_TOKEN = "/api/refresh_token",
+  VERIFYTOKEN = "/api/verifyToken",
   SAVE_SALARY = "/api/salary/save/:id",
   GET_SALARY = "/api/salary/:id",
 }
 
 export enum Permissions {
-  USER = "SAVEMONEY_USER",
+  SAVEMONEY_USER = "SAVEMONEY_USER",
 }

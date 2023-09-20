@@ -17,8 +17,16 @@ class SalaryService {
     static registerSalaryService(value, userId) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const salary = yield salary_1.default.findOne({ userId });
-                salary.value = value;
+                let salary = yield salary_1.default.findOne({ userId });
+                if (!salary) {
+                    salary = new salary_1.default({
+                        userId: userId,
+                        value: value,
+                    });
+                }
+                else {
+                    salary.value = value;
+                }
                 yield salary.save();
                 return "Salário registrado com sucesso";
             }

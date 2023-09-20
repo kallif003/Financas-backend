@@ -6,12 +6,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const salary_controller_1 = __importDefault(require("../controllers/salary_controller"));
 const enum_1 = require("../utils/enum");
-const middleware_1 = require("../middleware");
-const enum_2 = require("../utils/enum");
 const salary_route = express_1.default.Router();
 const salary_controller = new salary_controller_1.default();
 salary_route
-    .get(enum_1.Routes.GET_SALARY, (0, middleware_1.verifyPermission)([enum_2.Permissions.USER]), salary_controller.getSalarary)
-    .put(enum_1.Routes.SAVE_SALARY, (0, middleware_1.verifyPermission)([enum_2.Permissions.USER]), salary_controller.registerSalary);
+    .get(enum_1.Routes.GET_SALARY, salary_controller.getSalarary)
+    .put(enum_1.Routes.SAVE_SALARY, salary_controller.registerSalary);
 exports.default = salary_route;
 //# sourceMappingURL=salary_route.js.map

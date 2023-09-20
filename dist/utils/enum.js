@@ -21,11 +21,12 @@ var Routes;
     Routes["LOGIN"] = "/api/login";
     Routes["PAYLOAD"] = "/api/payload";
     Routes["REFRESH_TOKEN"] = "/api/refresh_token";
+    Routes["VERIFYTOKEN"] = "/api/verifyToken";
     Routes["SAVE_SALARY"] = "/api/salary/save/:id";
     Routes["GET_SALARY"] = "/api/salary/:id";
 })(Routes = exports.Routes || (exports.Routes = {}));
 var Permissions;
 (function (Permissions) {
-    Permissions["USER"] = "SAVEMONEY_USER";
+    Permissions["SAVEMONEY_USER"] = "SAVEMONEY_USER";
 })(Permissions = exports.Permissions || (exports.Permissions = {}));
 //# sourceMappingURL=enum.js.map
