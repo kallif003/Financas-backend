@@ -8,12 +8,13 @@ const salary_route_1 = __importDefault(require("./salary_route"));
 const category_route_1 = __importDefault(require("./category_route"));
 const release_route_1 = __importDefault(require("./release_route"));
 const middleware_1 = require("../middleware");
+const permissions_1 = require("../utils/permissions");
 const cors_1 = __importDefault(require("cors"));
 const router = (app) => {
     app.route("/").get((req, res) => {
         res.status(200).send("SaveMoney Backend Ativo");
     });
-    app.use(express_1.default.json(), (0, cors_1.default)(), middleware_1.cacheControlMiddleware, middleware_1.verifyToken, salary_route_1.default, category_route_1.default, release_route_1.default);
+    app.use(express_1.default.json(), (0, cors_1.default)(), middleware_1.cacheControlMiddleware, middleware_1.verifyToken, (0, middleware_1.verifyPermission)(permissions_1.typePermissions), salary_route_1.default, category_route_1.default, release_route_1.default);
 };
 exports.default = router;
 //# sourceMappingURL=index.js.map

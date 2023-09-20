@@ -12,12 +12,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const enum_1 = require("../utils/enum");
 const AxiosClient_1 = require("../clients/AxiosClient");
 class ExternalApiService {
-    static validateToken() {
+    static validateToken(token) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                console.log((0, AxiosClient_1.useClient)());
+                (0, AxiosClient_1.setBearerAuthorization)((0, AxiosClient_1.useClient)(), token);
                 const response = yield (0, AxiosClient_1.useClient)().post(enum_1.Routes.VERIFYTOKEN);
-                return response.data;
+                return response;
             }
             catch (error) {
                 throw error;

@@ -26,5 +26,5 @@ export enum Routes {
 }
 
 export enum Permissions {
-  USER = "SAVEMONEY_USER",
+  SAVEMONEY_USER = "SAVEMONEY_USER",
 }

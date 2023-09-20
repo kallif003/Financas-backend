@@ -27,6 +27,6 @@ var Routes;
 })(Routes = exports.Routes || (exports.Routes = {}));
 var Permissions;
 (function (Permissions) {
-    Permissions["USER"] = "SAVEMONEY_USER";
+    Permissions["SAVEMONEY_USER"] = "SAVEMONEY_USER";
 })(Permissions = exports.Permissions || (exports.Permissions = {}));
 //# sourceMappingURL=enum.js.map

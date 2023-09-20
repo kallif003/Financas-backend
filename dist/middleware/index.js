@@ -12,10 +12,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.cacheControlMiddleware = exports.verifyToken = exports.validRequest = void 0;
+exports.cacheControlMiddleware = exports.verifyPermission = exports.verifyToken = exports.validRequest = void 0;
 const express_validator_1 = require("express-validator");
 const externalApi_service_1 = __importDefault(require("../services/externalApi_service"));
-const AxiosClient_1 = require("../clients/AxiosClient");
 const validRequest = (req, res, next) => {
     const myValidationResult = express_validator_1.validationResult.withDefaults({
         formatter: (error) => {
@@ -38,23 +37,37 @@ const validRequest = (req, res, next) => {
 exports.validRequest = validRequest;
 const verifyToken = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
-    try {
-        const token = (_a = req.headers.authorization) === null || _a === void 0 ? void 0 : _a.replace("Bearer ", "");
-        (0, AxiosClient_1.setBearerAuthorization)((0, AxiosClient_1.useClient)(), token);
-        if (!token) {
-            res.status(401).json({ message: "Token não fornecido" });
-            return;
-        }
-        const validToken = yield externalApi_service_1.default.validateToken();
-        if (validToken) {
-            next();
-        }
+    const token = (_a = req.headers.authorization) === null || _a === void 0 ? void 0 : _a.replace("Bearer ", "");
+    if (!token) {
+        res.status(401).json({ message: "Token não fornecido" });
+        return;
     }
-    catch (error) {
+    const validToken = yield externalApi_service_1.default.validateToken(token);
+    if (validToken.status == 200) {
+        req.token = token;
+        req.user = validToken.data;
+        next();
+    }
+    else {
         res.status(401).json({ message: "Token inválido" });
+        return;
     }
 });
 exports.verifyToken = verifyToken;
+const verifyPermission = (permission) => {
+    return (req, res, next) => {
+        const user = req.user;
+        if (permission.includes(user.permission[0])) {
+            next();
+        }
+        else {
+            return res.status(401).send({
+                message: "Você não possui permissão",
+            });
+        }
+    };
+};
+exports.verifyPermission = verifyPermission;
 const cacheControlMiddleware = (req, res, next) => {
     res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
     next();

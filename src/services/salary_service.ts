@@ -4,9 +4,16 @@ import Salary from "../models/salary";
 class SalaryService {
   static async registerSalaryService(value: number, userId: string) {
     try {
-      const salary: ISalarySchema = await Salary.findOne({ userId });
+      let salary: ISalarySchema = await Salary.findOne({ userId });
 
-      salary.value = value;
+      if (!salary) {
+        salary = new Salary({
+          userId: userId,
+          value: value,
+        });
+      } else {
+        salary.value = value;
+      }
 
       await salary.save();
 

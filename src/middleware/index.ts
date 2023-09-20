@@ -2,7 +2,6 @@ import { validationResult } from "express-validator";
 import { NextFunction, Request, Response, RequestHandler } from "express";
 import { UserPayload } from "../utils/jwtUtils";
 import ExternalApiService from "../services/externalApi_service";
-import { setBearerAuthorization, useClient } from "../clients/AxiosClient";
 
 export const validRequest = (
   req: Request,
@@ -41,24 +40,38 @@ export const verifyToken = async (
   res: Response,
   next: NextFunction
 ) => {
-  try {
-    const token = req.headers.authorization?.replace("Bearer ", "");
+  const token = req.headers.authorization?.replace("Bearer ", "");
 
-    setBearerAuthorization(useClient(), token);
-
-    if (!token) {
-      res.status(401).json({ message: "Token não fornecido" });
-      return;
-    }
-
-    const validToken = await ExternalApiService.validateToken();
-
-    if (validToken) {
-      next();
-    }
-  } catch (error: any) {
-    res.status(401).json({ message: "Token inválido" });
+  if (!token) {
+    res.status(401).json({ message: "Token não fornecido" });
+    return;
   }
+
+  const validToken = await ExternalApiService.validateToken(token);
+
+  if (validToken.status == 200) {
+    req.token = token as string;
+    req.user = validToken.data as UserPayload;
+
+    next();
+  } else {
+    res.status(401).json({ message: "Token inválido" });
+    return;
+  }
+};
+
+export const verifyPermission = (permission: string[]): RequestHandler => {
+  return (req: Request, res: Response, next: NextFunction) => {
+    const user = req.user as UserPayload;
+
+    if (permission.includes(user.permission[0])) {
+      next();
+    } else {
+      return res.status(401).send({
+        message: "Você não possui permissão",
+      });
+    }
+  };
 };
 
 export const cacheControlMiddleware = (

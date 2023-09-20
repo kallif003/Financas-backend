@@ -2,8 +2,12 @@ import express, { Request, Response, Express } from "express";
 import salary_route from "./salary_route";
 import category_route from "./category_route";
 import release_route from "./release_route";
-import { verifyToken, cacheControlMiddleware } from "../middleware";
-
+import {
+  verifyToken,
+  cacheControlMiddleware,
+  verifyPermission,
+} from "../middleware";
+import { typePermissions } from "../utils/permissions";
 import cors from "cors";
 
 const router = (app: Express) => {
@@ -16,6 +20,7 @@ const router = (app: Express) => {
     cors(),
     cacheControlMiddleware,
     verifyToken,
+    verifyPermission(typePermissions),
     salary_route,
     category_route,
     release_route

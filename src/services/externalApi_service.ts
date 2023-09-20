@@ -1,15 +1,15 @@
 import { Routes } from "../utils/enum";
-import { useClient } from "../clients/AxiosClient";
-import { UserPayload } from "../utils/jwtUtils";
+import { setBearerAuthorization, useClient } from "../clients/AxiosClient";
+import { AxiosResponse } from "axios";
 
 class ExternalApiService {
-  static async validateToken(): Promise<UserPayload> {
+  static async validateToken(token: string): Promise<AxiosResponse<any, any>> {
     try {
-      console.log(useClient());
-
+      setBearerAuthorization(useClient(), token);
+      
       const response = await useClient().post(Routes.VERIFYTOKEN);
 
-      return response.data;
+      return response;
     } catch (error) {
       throw error;
     }
