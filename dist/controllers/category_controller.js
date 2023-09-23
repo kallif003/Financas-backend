@@ -38,7 +38,7 @@ class CategoryController {
                 const { id } = req.params;
                 const skip = (parseInt(page) - 1) * parseInt(itemsPerPage);
                 const categories = yield category_service_1.default.getCategoriesService(id, skip, itemsPerPage);
-                return res.status(201).json(categories);
+                return res.status(200).json(categories);
             }
             catch (error) {
                 if (error instanceof handleError_1.default) {
