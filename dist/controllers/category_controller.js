@@ -95,7 +95,7 @@ class CategoryController {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const { id } = req.params;
-                const category = yield category_service_1.default.deleteCategoryService(id);
+                yield category_service_1.default.deleteCategoryService(id);
                 return res.status(204).json("deleted category");
             }
             catch (error) {
