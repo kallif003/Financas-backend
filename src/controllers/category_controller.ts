@@ -100,7 +100,7 @@ class CategoryController {
     try {
       const { id } = req.params;
 
-      const category = await CategoryService.deleteCategoryService(id);
+      await CategoryService.deleteCategoryService(id);
 
       return res.status(204).json("deleted category");
     } catch (error: any) {
